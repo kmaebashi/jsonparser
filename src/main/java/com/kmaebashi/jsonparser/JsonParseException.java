@@ -1,7 +1,9 @@
 package com.kmaebashi.jsonparser;
 
 public class JsonParseException extends Exception {
-    public JsonParseException(String message) {
-        super(message);
+    int lineNumber;
+    public JsonParseException(String message, int lineNumber) {
+        super(message + " at " + lineNumber);
+        this.lineNumber = lineNumber;
     }
 }

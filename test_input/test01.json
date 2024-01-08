@@ -1,0 +1,11 @@
+{
+  "array": [1, 2.0, -1, -2.0],
+  "array2": [3e5, 3E5, 3.1e5, 3.1E5, 3.1e+5, 3.1e-5],
+  "string": "abcあいうえお",
+  "string2": "\"\\\/\b\f\n\r\t",
+  "string3": "\u3042",
+  "string4": "\u3042\u3044\u3046",
+  "string5": "\uD867\uDE3D",
+  "string6": "\uD867\uDE3D\r\n",
+  "string7": "\uD867\uDE3D\u3042\u3044\u3046"
+}
