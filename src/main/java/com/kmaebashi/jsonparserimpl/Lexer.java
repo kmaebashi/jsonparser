@@ -132,9 +132,6 @@ public class Lexer {
                     if (Character.isDigit(ch)) {
                         currentToken.append((char)ch);
                         currentStatus = Status.AFTER_DECIMAL_POINT;
-                    } else if (ch == 'E' || ch == 'e') {
-                        currentToken.append('e');
-                        currentStatus = Status.EXP_SIGN;
                     } else {
                         throw new JsonParseException("小数点の後ろに数字がありません(" + (char)ch + ")",
                                                      this.currentLineNumber);

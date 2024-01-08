@@ -1,11 +1,15 @@
 package com.kmaebashi.jsonparser;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class JsonArray extends JsonElement {
-    private ArrayList<JsonElement> array = new ArrayList<>();
+    private List<JsonElement> array;
 
-    public ArrayList getArray() {
+    public JsonArray(List<JsonElement> arrayList) {
+        this.array = arrayList;
+    }
+
+    public List getArray() {
         return this.array;
     }
 }

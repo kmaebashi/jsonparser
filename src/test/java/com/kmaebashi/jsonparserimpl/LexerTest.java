@@ -33,6 +33,13 @@ class LexerTest {
     }
 
     @Test
+    void getTokenTest002() throws Exception {
+        Lexer lexer = new Lexer(new StringReader("\"\\\"\\\\/\\b\\f\\n\\r\\t\""));
+        Token token = lexer.getToken();
+        assertEquals(TokenType.STRING, token.type);
+        assertEquals("\"\\/\b\f\n\r\t", token.tokenString);
+    }
+    @Test
     void getTokenError001() throws Exception {
         Lexer lexer = new Lexer(new StringReader("*"));
         try {
@@ -40,6 +47,61 @@ class LexerTest {
             fail();
         } catch (JsonParseException ex) {
             assertEquals(ex.getMessage(), "不正な文字(*) at 1");
+        }
+    }
+
+    @Test
+    void getTokenError002() throws Exception {
+        Lexer lexer = new Lexer(new StringReader("-,"));
+        try {
+            Token token = lexer.getToken();
+            fail();
+        } catch (JsonParseException ex) {
+            assertEquals(ex.getMessage(), "マイナスの後ろに数字がありません(,) at 1");
+        }
+    }
+
+    @Test
+    void getTokenError003() throws Exception {
+        Lexer lexer = new Lexer(new StringReader("123.,"));
+        try {
+            Token token = lexer.getToken();
+            fail();
+        } catch (JsonParseException ex) {
+            assertEquals(ex.getMessage(), "小数点の後ろに数字がありません(,) at 1");
+        }
+    }
+
+    @Test
+    void getTokenError004() throws Exception {
+        Lexer lexer = new Lexer(new StringReader("abc"));
+        try {
+            Token token = lexer.getToken();
+            fail();
+        } catch (JsonParseException ex) {
+            assertEquals(ex.getMessage(), "不正なキーワード(abc) at 1");
+        }
+    }
+
+    @Test
+    void getTokenError005() throws Exception {
+        Lexer lexer = new Lexer(new StringReader("\"abc\\z\""));
+        try {
+            Token token = lexer.getToken();
+            fail();
+        } catch (JsonParseException ex) {
+            assertEquals(ex.getMessage(), "不正なエスケープ文字です(z) at 1");
+        }
+    }
+
+    @Test
+    void getTokenError006() throws Exception {
+        Lexer lexer = new Lexer(new StringReader("\"abc\\u123z\""));
+        try {
+            Token token = lexer.getToken();
+            fail();
+        } catch (JsonParseException ex) {
+            assertEquals(ex.getMessage(), "\\uの後ろには16進数4桁が来なければいけません(z) at 1");
         }
     }
 }
