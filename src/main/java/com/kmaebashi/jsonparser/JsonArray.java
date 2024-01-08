@@ -2,14 +2,8 @@ package com.kmaebashi.jsonparser;
 
 import java.util.List;
 
-public class JsonArray extends JsonElement {
-    private List<JsonElement> array;
+public interface JsonArray extends JsonElement {
+    public List<JsonElement> getArray();
 
-    public JsonArray(List<JsonElement> arrayList) {
-        this.array = arrayList;
-    }
-
-    public List getArray() {
-        return this.array;
-    }
+    public String stringify();
 }

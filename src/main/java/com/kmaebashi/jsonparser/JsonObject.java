@@ -2,14 +2,8 @@ package com.kmaebashi.jsonparser;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class JsonObject extends JsonElement {
-    private SortedMap<String, JsonElement> map;
+public interface JsonObject extends JsonElement {
+    public SortedMap<String, JsonElement> getSortedMap();
 
-    public JsonObject(SortedMap sortedMap) {
-        this.map = sortedMap;
-    }
-
-    public SortedMap getSortedMap() {
-        return this.map;
-    }
+    public String stringify();
 }

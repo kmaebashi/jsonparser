@@ -48,17 +48,17 @@ public class JsonParserImpl implements JsonParser {
         Token token = getToken();
 
         if (token.type == TokenType.INT) {
-            return new JsonValue(token.intValue, token.lineNumber);
+            return new JsonValueImpl(token.intValue, token.lineNumber);
         } else if (token.type == TokenType.REAL) {
-            return new JsonValue(token.realValue, token.lineNumber);
+            return new JsonValueImpl(token.realValue, token.lineNumber);
         } else if (token.type == TokenType.STRING) {
-            return new JsonValue(token.tokenString, token.lineNumber);
+            return new JsonValueImpl(token.tokenString, token.lineNumber);
         } else if (token.type == TokenType.TRUE) {
-            return new JsonValue(true, token.lineNumber);
+            return new JsonValueImpl(true, token.lineNumber);
         } else if (token.type == TokenType.FALSE) {
-            return new JsonValue(false, token.lineNumber);
+            return new JsonValueImpl(false, token.lineNumber);
         } else if (token.type == TokenType.NULL) {
-            return new JsonValue(token.lineNumber);
+            return new JsonValueImpl(token.lineNumber);
         } else if (token.type == TokenType.LEFT_BRACKET) {
             return parseArray();
         } else if (token.type == TokenType.LEFT_BRACE) {
@@ -72,9 +72,13 @@ public class JsonParserImpl implements JsonParser {
         ArrayList<JsonElement> arrayList = new ArrayList<>();
 
         Token token;
+        boolean tailComma = false;
         for (;;) {
             token = lexer.getToken();
             if (token.type == TokenType.RIGHT_BRACKET) {
+                if (tailComma) {
+                    throw new JsonParseException("JSONでは配列の末尾に,は付けられません", token.lineNumber);
+                }
                 break;
             }
             ungetToken(token);
@@ -85,21 +89,26 @@ public class JsonParserImpl implements JsonParser {
             if (token.type != TokenType.COMMA) {
                 break;
             }
+            tailComma = true;
         }
         if (token.type != TokenType.RIGHT_BRACKET) {
             throw new JsonParseException("配列の要素の終わりがカンマでも]でもありません(" + token.type + ")",
                                          token.lineNumber);
         }
-        return new JsonArray(Collections.unmodifiableList(arrayList));
+        return new JsonArrayImpl(Collections.unmodifiableList(arrayList));
     }
 
     private JsonObject parseObject() throws IOException, JsonParseException {
         SortedMap<String, JsonElement> sortedMap = new TreeMap<>();
 
         Token token;
+        boolean tailComma = false;
         for (;;) {
             token = lexer.getToken();
             if (token.type == TokenType.RIGHT_BRACE) {
+                if (tailComma) {
+                    throw new JsonParseException("JSONではオブジェクトの末尾に,は付けられません", token.lineNumber);
+                }
                 break;
             }
             ungetToken(token);
@@ -110,7 +119,7 @@ public class JsonParserImpl implements JsonParser {
             }
             Token colonToken = getToken();
             if (colonToken.type != TokenType.COLON) {
-                throw new JsonParseException("オブジェクトのキーの後ろがコロンではありません(" + keyToken.type + ")",
+                throw new JsonParseException("オブジェクトのキーの後ろがコロンではありません(" + colonToken.type + ")",
                         token.lineNumber);
             }
             JsonElement elem = parseJsonElement();
@@ -124,12 +133,13 @@ public class JsonParserImpl implements JsonParser {
             if (token.type != TokenType.COMMA) {
                 break;
             }
+            tailComma = true;
         }
         if (token.type != TokenType.RIGHT_BRACE) {
             throw new JsonParseException("オブジェクトの要素の終わりがカンマでも}でもありません(" + token.type + ")",
                     token.lineNumber);
         }
-        return new JsonObject(Collections.unmodifiableSortedMap(sortedMap));
+        return new JsonObjectImpl(Collections.unmodifiableSortedMap(sortedMap));
     }
 
     @Override

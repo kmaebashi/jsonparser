@@ -46,7 +46,7 @@ class LexerTest {
             Token token = lexer.getToken();
             fail();
         } catch (JsonParseException ex) {
-            assertEquals(ex.getMessage(), "不正な文字(*) at 1");
+            assertEquals("不正な文字(*) at 1", ex.getMessage());
         }
     }
 
@@ -57,7 +57,7 @@ class LexerTest {
             Token token = lexer.getToken();
             fail();
         } catch (JsonParseException ex) {
-            assertEquals(ex.getMessage(), "マイナスの後ろに数字がありません(,) at 1");
+            assertEquals("マイナスの後ろに数字がありません(,) at 1", ex.getMessage());
         }
     }
 
@@ -68,7 +68,7 @@ class LexerTest {
             Token token = lexer.getToken();
             fail();
         } catch (JsonParseException ex) {
-            assertEquals(ex.getMessage(), "小数点の後ろに数字がありません(,) at 1");
+            assertEquals("小数点の後ろに数字がありません(,) at 1", ex.getMessage());
         }
     }
 
@@ -79,7 +79,7 @@ class LexerTest {
             Token token = lexer.getToken();
             fail();
         } catch (JsonParseException ex) {
-            assertEquals(ex.getMessage(), "不正なキーワード(abc) at 1");
+            assertEquals("不正なキーワード(abc) at 1", ex.getMessage());
         }
     }
 
@@ -90,7 +90,7 @@ class LexerTest {
             Token token = lexer.getToken();
             fail();
         } catch (JsonParseException ex) {
-            assertEquals(ex.getMessage(), "不正なエスケープ文字です(z) at 1");
+            assertEquals("不正なエスケープ文字です(z) at 1", ex.getMessage());
         }
     }
 
@@ -101,7 +101,7 @@ class LexerTest {
             Token token = lexer.getToken();
             fail();
         } catch (JsonParseException ex) {
-            assertEquals(ex.getMessage(), "\\uの後ろには16進数4桁が来なければいけません(z) at 1");
+            assertEquals("\\uの後ろには16進数4桁が来なければいけません(z) at 1", ex.getMessage());
         }
     }
 }

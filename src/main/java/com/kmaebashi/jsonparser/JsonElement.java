@@ -1,4 +1,5 @@
 package com.kmaebashi.jsonparser;
 
-public abstract class JsonElement {
+public interface JsonElement {
+    public String stringify();
 }
