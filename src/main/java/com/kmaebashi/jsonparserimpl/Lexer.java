@@ -251,6 +251,9 @@ public class Lexer {
                     if (ch == 'u') {
                         currentStatus = Status.STRING_UNICODE;
                     } else {
+                        int[] codePoints = arrayListToIntArray(unicodeCodePoints);
+                        String str = new String(codePoints, 0, codePoints.length);
+                        currentToken.append(str);
                         ungetc(ch);
                         currentStatus = Status.STRING_ESCAPE;
                     }
