@@ -1,5 +1,6 @@
 package com.kmaebashi.jsonparserimpl;
 
+import com.kmaebashi.TestUtil;
 import com.kmaebashi.jsonparser.JsonElement;
 import com.kmaebashi.jsonparser.JsonParseException;
 import org.junit.jupiter.api.Test;
@@ -19,12 +20,72 @@ class JsonParserImplTest {
     @Test
     void parseTest001() throws Exception {
         try (Reader reader = new BufferedReader(new InputStreamReader(
-                new FileInputStream("test_input\\test01.json"), StandardCharsets.UTF_8));
-             var writer = new FileWriter("test_output\\parseTest001.txt")) {
+                new FileInputStream("test_input\\test02.json"), StandardCharsets.UTF_8));
+             var writer = new FileWriter("test_output\\parseImplTest001.txt")) {
             JsonParserImpl paserImpl = new JsonParserImpl(reader);
             JsonElement result = paserImpl.parse();
             writer.write(result.stringify());
         }
+        assertTrue(TestUtil.compareFiles("test_output\\parseImplTest001.txt", "test_expected\\parseImplTest001.txt"));
+    }
+
+    @Test
+    void parseTest002() throws Exception {
+        try (Reader reader = new BufferedReader(new InputStreamReader(
+                new FileInputStream("test_input\\test03.json"), StandardCharsets.UTF_8));
+             var writer = new FileWriter("test_output\\parseImplTest002.txt")) {
+            JsonParserImpl paserImpl = new JsonParserImpl(reader);
+            JsonElement result = paserImpl.parse();
+            writer.write(result.stringify());
+        }
+        assertTrue(TestUtil.compareFiles("test_output\\parseImplTest002.txt", "test_expected\\parseImplTest002.txt"));
+    }
+
+    @Test
+    void parseTest003() throws Exception {
+        JsonParserImpl parser = new JsonParserImpl(new StringReader("123"));
+
+        JsonElement elem = parser.parse();
+        assertEquals("123", elem.stringify());
+    }
+
+    @Test
+    void parseTest004() throws Exception {
+        JsonParserImpl parser = new JsonParserImpl(new StringReader("123.456"));
+
+        JsonElement elem = parser.parse();
+        assertEquals("123.456", elem.stringify());
+    }
+    @Test
+    void parseTest005() throws Exception {
+        JsonParserImpl parser = new JsonParserImpl(new StringReader("\"abc\""));
+
+        JsonElement elem = parser.parse();
+        assertEquals("\"abc\"", elem.stringify());
+    }
+
+    @Test
+    void parseTest006() throws Exception {
+        JsonParserImpl parser = new JsonParserImpl(new StringReader("true"));
+
+        JsonElement elem = parser.parse();
+        assertEquals("true", elem.stringify());
+    }
+
+    @Test
+    void parseTest007() throws Exception {
+        JsonParserImpl parser = new JsonParserImpl(new StringReader("false"));
+
+        JsonElement elem = parser.parse();
+        assertEquals("false", elem.stringify());
+    }
+
+    @Test
+    void parseTest008() throws Exception {
+        JsonParserImpl parser = new JsonParserImpl(new StringReader("null"));
+
+        JsonElement elem = parser.parse();
+        assertEquals("null", elem.stringify());
     }
 
     @Test

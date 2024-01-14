@@ -1,9 +1,9 @@
 package com.kmaebashi.jsonparser;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.Map;
 
 public interface JsonObject extends JsonElement {
-    public SortedMap<String, JsonElement> getSortedMap();
-
+    public Map<String, JsonElement> getMap();
+    public int getLeftBraceLineNumber();
+    public int getRightBraceLineNumber();
     public String stringify();
 }

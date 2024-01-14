@@ -2,18 +2,34 @@ package com.kmaebashi.jsonparserimpl;
 import com.kmaebashi.jsonparser.JsonElement;
 import com.kmaebashi.jsonparser.JsonObject;
 
-import java.util.SortedMap;
+import java.util.Map;
 
 public class JsonObjectImpl implements JsonObject {
-    private SortedMap<String, JsonElement> map;
+    private Map<String, JsonElement> map;
+    private int leftBraceLineNumber;
+    private int rightBraceLineNumber;
 
-    public JsonObjectImpl(SortedMap<String, JsonElement> sortedMap) {
-        this.map = sortedMap;
+    public JsonObjectImpl(Map<String, JsonElement> map,
+                          int leftBraceTokenLineNumber,
+                          int rightBraceTokenLineNumber) {
+        this.map = map;
+        this.leftBraceLineNumber = leftBraceTokenLineNumber;
+        this.rightBraceLineNumber = rightBraceTokenLineNumber;
     }
 
     @Override
-    public SortedMap<String, JsonElement> getSortedMap() {
+    public Map<String, JsonElement> getMap() {
         return this.map;
+    }
+
+    @Override
+    public int getLeftBraceLineNumber() {
+        return this.leftBraceLineNumber;
+    }
+
+    @Override
+    public int getRightBraceLineNumber() {
+        return this.rightBraceLineNumber;
     }
 
     @Override
@@ -33,7 +49,7 @@ public class JsonObjectImpl implements JsonObject {
             }
             isFirst = false;
             Util.addIndent(sb, indentLevel + 1);
-            sb.append(key + ":");
+            sb.append("\"" + key + "\":");
             JsonElement elem = map.get(key);
             if (elem instanceof JsonObjectImpl objElem) {
                 objElem.stringifySub(sb, indentLevel + 1);

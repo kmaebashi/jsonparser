@@ -1,0 +1,54 @@
+{
+    "array":[
+        1,
+        2.0,
+        123,
+        123.456,
+        -1,
+        -2.0
+    ],
+    "array2":[
+        300000.0,
+        300000.0,
+        310000.0,
+        310000.0,
+        310000.0,
+        3.1E-5,
+        true,
+        false,
+        null
+    ],
+    "string":"abcあいうえお",
+    "string2":"\"\\/\b\f\n\r\t",
+    "string3":"あ",
+    "string4":"あいう",
+    "string5":"𩸽",
+    "string6":"𩸽\r\n",
+    "string7":"𩸽あいう",
+    "objSub":{
+        "sub1":1,
+        "sub2":"abc"
+    },
+    "objInArray":[
+        {
+            "objInArray1":1,
+            "objInArray2":"abc"
+        },
+        [
+
+        ],
+        {
+
+        }
+    ],
+    "arrayInArray":[
+        [
+            1,
+            true,
+            {
+                "arrayInArray1":1,
+                "arrayInArray2":"abc"
+            }
+        ]
+    ]
+}

@@ -6,14 +6,30 @@ import java.util.List;
 
 public class JsonArrayImpl implements JsonArray {
     private List<JsonElement> array;
+    private int leftBracketLineNumber;
+    private int rightBracketLineNumber;
 
-    public JsonArrayImpl(List<JsonElement> arrayList) {
+    public JsonArrayImpl(List<JsonElement> arrayList,
+                         int leftBracketLineNumber,
+                         int rightBracketLineNumber) {
         this.array = arrayList;
+        this.leftBracketLineNumber = leftBracketLineNumber;
+        this.rightBracketLineNumber = rightBracketLineNumber;
     }
 
     @Override
     public List<JsonElement> getArray() {
         return this.array;
+    }
+
+    @Override
+    public int getLeftBracketLineNumber() {
+        return this.leftBracketLineNumber;
+    }
+
+    @Override
+    public int getRightBracketLineNumber() {
+        return this.rightBracketLineNumber;
     }
 
     @Override

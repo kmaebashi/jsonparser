@@ -40,6 +40,11 @@ public class JsonValueImpl implements JsonValue {
     }
 
     @Override
+    public JsonValueType getType() {
+        return this.type;
+    }
+
+    @Override
     public int getInt() {
         return this.intValue;
     }

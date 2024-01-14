@@ -1,7 +1,7 @@
 package com.kmaebashi.jsonparser;
 
 public interface JsonValue extends JsonElement {
-
+    public JsonValueType getType();
 
     public int getInt();
 

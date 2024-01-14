@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class JsonParserImpl implements JsonParser {
     Reader reader;
@@ -60,15 +60,15 @@ public class JsonParserImpl implements JsonParser {
         } else if (token.type == TokenType.NULL) {
             return new JsonValueImpl(token.lineNumber);
         } else if (token.type == TokenType.LEFT_BRACKET) {
-            return parseArray();
+            return parseArray(token);
         } else if (token.type == TokenType.LEFT_BRACE) {
-            return parseObject();
+            return parseObject(token);
         } else {
             throw new JsonParseException("不正なトークンです(" + token.type + ")", token.lineNumber);
         }
     }
 
-    private JsonArray parseArray() throws IOException, JsonParseException {
+    private JsonArray parseArray(Token leftBracketToken) throws IOException, JsonParseException {
         ArrayList<JsonElement> arrayList = new ArrayList<>();
 
         Token token;
@@ -95,11 +95,12 @@ public class JsonParserImpl implements JsonParser {
             throw new JsonParseException("配列の要素の終わりがカンマでも]でもありません(" + token.type + ")",
                                          token.lineNumber);
         }
-        return new JsonArrayImpl(Collections.unmodifiableList(arrayList));
+        return new JsonArrayImpl(Collections.unmodifiableList(arrayList),
+                                            leftBracketToken.lineNumber, token.lineNumber);
     }
 
-    private JsonObject parseObject() throws IOException, JsonParseException {
-        SortedMap<String, JsonElement> sortedMap = new TreeMap<>();
+    private JsonObject parseObject(Token leftBraceToken) throws IOException, JsonParseException {
+        Map<String, JsonElement> map = new LinkedHashMap<>();
 
         Token token;
         boolean tailComma = false;
@@ -123,11 +124,11 @@ public class JsonParserImpl implements JsonParser {
                         token.lineNumber);
             }
             JsonElement elem = parseJsonElement();
-            if (sortedMap.containsKey(keyToken.tokenString)) {
+            if (map.containsKey(keyToken.tokenString)) {
                 throw new JsonParseException("オブジェクトのキーが重複しています(" + keyToken.tokenString + ")",
                         token.lineNumber);
             }
-            sortedMap.put(keyToken.tokenString, elem);
+            map.put(keyToken.tokenString, elem);
 
             token = lexer.getToken();
             if (token.type != TokenType.COMMA) {
@@ -139,7 +140,8 @@ public class JsonParserImpl implements JsonParser {
             throw new JsonParseException("オブジェクトの要素の終わりがカンマでも}でもありません(" + token.type + ")",
                     token.lineNumber);
         }
-        return new JsonObjectImpl(Collections.unmodifiableSortedMap(sortedMap));
+        return new JsonObjectImpl(Collections.unmodifiableMap(map),
+                                  leftBraceToken.lineNumber, token.lineNumber);
     }
 
     @Override
