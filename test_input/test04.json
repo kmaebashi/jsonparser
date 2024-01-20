@@ -1,0 +1,33 @@
+{
+  "array": [1, 2.0, 123, 123.456, -1, -2.0],
+  "array2": [3e5, 3E5, 3.1e5, 3.1E5, 3.1e+5, 3.1e-5, true, false, null],
+  "string": "abcあいうえお",
+  "string2": "\"\\\/\t",
+  "string3": "\u3042",
+  "string4": "\u3042\u3044\u3046",
+  "string5": "\uD867\uDE3D",
+  "string6": "\uD867\uDE3D\r\n",
+  "string7": "\uD867\uDE3D\u3042\u3044\u3046",
+  "objSub": {
+    "sub1": 1,
+    "sub2": "abc"
+  },
+  "objInArray": [
+    {
+      "objInArray1": 1,
+      "objInArray2": "abc"
+    },
+    [],
+    {}
+  ],
+  "arrayInArray": [
+    [
+      1,
+      true,
+      {
+        "arrayInArray1": 1,
+        "arrayInArray2": "abc"
+      }
+    ]
+  ]
+}

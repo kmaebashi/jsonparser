@@ -8,13 +8,16 @@ public class JsonObjectImpl implements JsonObject {
     private Map<String, JsonElement> map;
     private int leftBraceLineNumber;
     private int rightBraceLineNumber;
+    private Map<String, Integer> keyLineNumberMap;
 
     public JsonObjectImpl(Map<String, JsonElement> map,
                           int leftBraceTokenLineNumber,
-                          int rightBraceTokenLineNumber) {
+                          int rightBraceTokenLineNumber,
+                          Map<String, Integer> keyLineNumberMap) {
         this.map = map;
         this.leftBraceLineNumber = leftBraceTokenLineNumber;
         this.rightBraceLineNumber = rightBraceTokenLineNumber;
+        this.keyLineNumberMap = keyLineNumberMap;
     }
 
     @Override
@@ -30,6 +33,11 @@ public class JsonObjectImpl implements JsonObject {
     @Override
     public int getRightBraceLineNumber() {
         return this.rightBraceLineNumber;
+    }
+
+    @Override
+    public int getKeyLineNumber(String key) {
+        return this.keyLineNumberMap.get(key);
     }
 
     @Override

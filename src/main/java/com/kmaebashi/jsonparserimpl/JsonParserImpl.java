@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.HashMap;
 
 public class JsonParserImpl implements JsonParser {
     Reader reader;
@@ -101,6 +102,7 @@ public class JsonParserImpl implements JsonParser {
 
     private JsonObject parseObject(Token leftBraceToken) throws IOException, JsonParseException {
         Map<String, JsonElement> map = new LinkedHashMap<>();
+        Map<String, Integer> keyLineNumberMap = new HashMap<>();
 
         Token token;
         boolean tailComma = false;
@@ -118,6 +120,7 @@ public class JsonParserImpl implements JsonParser {
                 throw new JsonParseException("オブジェクトのキーが文字列ではありません(" + keyToken.type + ")",
                                              token.lineNumber);
             }
+            keyLineNumberMap.put(keyToken.tokenString, token.lineNumber);
             Token colonToken = getToken();
             if (colonToken.type != TokenType.COLON) {
                 throw new JsonParseException("オブジェクトのキーの後ろがコロンではありません(" + colonToken.type + ")",
@@ -141,7 +144,8 @@ public class JsonParserImpl implements JsonParser {
                     token.lineNumber);
         }
         return new JsonObjectImpl(Collections.unmodifiableMap(map),
-                                  leftBraceToken.lineNumber, token.lineNumber);
+                                  leftBraceToken.lineNumber, token.lineNumber,
+                                  Collections.unmodifiableMap(keyLineNumberMap));
     }
 
     @Override

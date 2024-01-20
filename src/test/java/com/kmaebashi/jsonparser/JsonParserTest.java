@@ -81,6 +81,16 @@ class JsonParserTest {
             }
             writer.write("] line.." + array.getRightBracketLineNumber() + "\r\n");
         }
+    }
 
+    @Test
+    void keyLineNumberTest() throws Exception {
+        Reader reader = new BufferedReader(new InputStreamReader(
+                new FileInputStream("test_input\\key_line_number.json"), StandardCharsets.UTF_8));
+        try (var parser = JsonParser.newInstance(reader)) {
+            JsonObject obj = (JsonObject)parser.parse();
+            assertEquals(2, obj.getKeyLineNumber("key1"));
+            assertEquals(6, obj.getKeyLineNumber("key2"));
+        }
     }
 }
