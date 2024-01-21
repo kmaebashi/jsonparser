@@ -5,7 +5,6 @@ import com.kmaebashi.jsonparser.JsonElement;
 import com.kmaebashi.jsonparser.JsonObject;
 import com.kmaebashi.jsonparser.JsonParseException;
 import com.kmaebashi.jsonparser.JsonParser;
-import com.kmaebashi.jsonparser.JsonValue;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -16,8 +15,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class JsonParserImpl implements JsonParser {
-    Reader reader;
-    Lexer lexer;
+    private final Reader reader;
+    private Lexer lexer;
     private Token lookAheadToken;
     private boolean lookingAhead = false;
 

@@ -3,12 +3,12 @@ import com.kmaebashi.jsonparser.JsonValue;
 import com.kmaebashi.jsonparser.JsonValueType;
 
 public class JsonValueImpl implements JsonValue {
-    private JsonValueType type;
+    private final JsonValueType type;
     private int intValue;
     private double realValue;
     private String stringValue;
     private boolean booleanValue;
-    private int lineNumber;
+    private final int lineNumber;
 
     public JsonValueImpl(int intValue, int lineNumber) {
         this.type = JsonValueType.INT;

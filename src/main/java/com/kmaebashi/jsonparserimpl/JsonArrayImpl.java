@@ -5,9 +5,9 @@ import com.kmaebashi.jsonparser.JsonElement;
 import java.util.List;
 
 public class JsonArrayImpl implements JsonArray {
-    private List<JsonElement> array;
-    private int leftBracketLineNumber;
-    private int rightBracketLineNumber;
+    private final List<JsonElement> array;
+    private final int leftBracketLineNumber;
+    private final int rightBracketLineNumber;
 
     public JsonArrayImpl(List<JsonElement> arrayList,
                          int leftBracketLineNumber,

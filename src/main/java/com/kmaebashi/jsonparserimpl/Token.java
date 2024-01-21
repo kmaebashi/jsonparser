@@ -1,11 +1,11 @@
 package com.kmaebashi.jsonparserimpl;
 
 public class Token {
-    TokenType type;
-    String tokenString;
+    final TokenType type;
+    final String tokenString;
     int intValue;
     double realValue;
-    int lineNumber;
+    final int lineNumber;
 
     Token(TokenType type, String tokenString, int lineNumber) {
         this.type = type;

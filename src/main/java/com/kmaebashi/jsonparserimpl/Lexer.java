@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class Lexer {
     private int currentLineNumber = 1;
-    private Reader reader;
+    private final Reader reader;
 
     private enum Status {
         INITIAL,
@@ -25,9 +25,9 @@ public class Lexer {
         STRING_UNICODE,
         STRING_UNICODE2,
         STRING_UNICODE3
-    };
+    }
 
-    private HashMap<String, TokenType> keywordTable = new HashMap<String,TokenType>() {
+    private final HashMap<String, TokenType> keywordTable = new HashMap<String,TokenType>() {
         {
             put("true", TokenType.TRUE);
             put("false", TokenType.FALSE);
@@ -64,7 +64,7 @@ public class Lexer {
         StringBuilder unicodeHexStr = new StringBuilder();
         ArrayList<Integer> unicodeCodePoints = new ArrayList<>();
 
-        getCFor: for (;;) {
+        for (;;) {
             ch = getc();
 
             switch (currentStatus) {

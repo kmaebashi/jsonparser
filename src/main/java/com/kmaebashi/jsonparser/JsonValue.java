@@ -1,17 +1,18 @@
 package com.kmaebashi.jsonparser;
 
 public interface JsonValue extends JsonElement {
-    public JsonValueType getType();
+    JsonValueType getType();
 
-    public int getInt();
+    int getInt();
 
-    public double getReal();
+    double getReal();
 
-    public String getString();
+    String getString();
 
-    public boolean getBoolean();
+    boolean getBoolean();
 
-    public int getLineNumber();
+    int getLineNumber();
 
-    public String stringify();
+    @Override
+    String stringify();
 }

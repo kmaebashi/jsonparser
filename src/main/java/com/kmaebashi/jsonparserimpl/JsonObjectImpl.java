@@ -5,10 +5,10 @@ import com.kmaebashi.jsonparser.JsonObject;
 import java.util.Map;
 
 public class JsonObjectImpl implements JsonObject {
-    private Map<String, JsonElement> map;
-    private int leftBraceLineNumber;
-    private int rightBraceLineNumber;
-    private Map<String, Integer> keyLineNumberMap;
+    private final Map<String, JsonElement> map;
+    private final int leftBraceLineNumber;
+    private final int rightBraceLineNumber;
+    private final Map<String, Integer> keyLineNumberMap;
 
     public JsonObjectImpl(Map<String, JsonElement> map,
                           int leftBraceTokenLineNumber,

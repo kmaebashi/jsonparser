@@ -145,6 +145,7 @@ class JsonParserImplTest {
             fail();
         } catch (JsonParseException ex) {
             assertEquals("オブジェクトのキーの後ろがコロンではありません(COMMA) at 1", ex.getMessage());
+            assertEquals(1, ex.getLineNumber());
         }
     }
 

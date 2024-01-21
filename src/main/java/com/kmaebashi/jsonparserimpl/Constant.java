@@ -1,8 +1,8 @@
 package com.kmaebashi.jsonparserimpl;
 
 public class Constant {
-    private Constant() {};
+    private Constant() {}
 
-    static int INDENT_OFFSET = 4;
-    static String LINE_SEPARATOR = System.getProperty("line.separator");
+    static final int INDENT_OFFSET = 4;
+    static final String LINE_SEPARATOR = System.lineSeparator();
 }

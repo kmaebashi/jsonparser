@@ -1,6 +1,7 @@
 package com.kmaebashi.jsonparser;
 
 import com.kmaebashi.TestUtil;
+import com.kmaebashi.jsonparserimpl.JsonValueImpl;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -85,12 +86,32 @@ class JsonParserTest {
 
     @Test
     void keyLineNumberTest() throws Exception {
-        Reader reader = new BufferedReader(new InputStreamReader(
-                new FileInputStream("test_input\\key_line_number.json"), StandardCharsets.UTF_8));
-        try (var parser = JsonParser.newInstance(reader)) {
+        try (var parser = JsonParser.newInstance("test_input\\key_line_number.json")) {
             JsonObject obj = (JsonObject)parser.parse();
             assertEquals(2, obj.getKeyLineNumber("key1"));
             assertEquals(6, obj.getKeyLineNumber("key2"));
         }
     }
+
+    @Test
+    void unmodifiableTest() throws Exception {
+        try (var parser = JsonParser.newInstance("test_input\\test01.json")) {
+            JsonObject obj = (JsonObject)parser.parse();
+
+            try {
+                obj.getMap().put("dummy", new JsonValueImpl(5));
+                fail();
+            } catch (Exception ex) {
+                assertInstanceOf(UnsupportedOperationException.class, ex);
+            }
+            try {
+                JsonArray array = (JsonArray)obj.getMap().get("array");
+                array.getArray().add(new JsonValueImpl(5));
+                fail();
+            } catch (Exception ex) {
+                assertInstanceOf(UnsupportedOperationException.class, ex);
+            }
+        }
+    }
+
 }
