@@ -8,7 +8,7 @@ JavaによるJSONパーサです。
 - JsonArrayはJsonElementのListを、JsonObjectはStringをキーとしてJsonElementを値とするMapを保持しています。
 - newInstance()には、ファイル名のほか、java.io.Readerを渡すこともできます。
 - 詳細はテストコード(src/test/com/kmaebashi/jsonparser/JsonParserTest.java)を参照してください。
-- 各JsonValueは元Jsonの行番号を持ちます。また、JsonArrayとJsonObjectは、開き括弧と閉じ括弧の行番号を持ちます。
+- 各JsonValueは元Jsonの行番号を持ちます。また、JsonArrayとJsonObjectは、開き括弧と閉じ括弧の行番号を持ち、さらにJsonObjectは各キーの行番号も持ちます。これを利用するプログラム側で適切なエラーメッセージを表示するための機能です。
 ```
 JsonElement elem;
 try (var parser = JsonParser.newInstance("test.json")) {
