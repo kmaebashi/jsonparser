@@ -11,6 +11,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -114,4 +117,36 @@ class JsonParserTest {
         }
     }
 
+    @Test
+    void createJsonTest() throws Exception {
+        List<JsonElement> array = new ArrayList<>();
+
+        array.add(JsonValue.createIntValue(5));
+        array.add(JsonValue.createRealValue(5.2));
+        array.add(JsonValue.createStringValue("abc"));
+        array.add(JsonValue.createBooleanValue(true));
+        array.add(JsonValue.createBooleanValue(false));
+        array.add(JsonValue.createNullValue());
+        JsonArray jsonArray = JsonArray.newInstance(array);
+
+        Map<String, JsonElement> map = new LinkedHashMap<>();
+        map.put("array", jsonArray);
+        Map<String, JsonElement> subMap = new LinkedHashMap<>();
+        subMap.put("int", JsonValue.createIntValue(6));
+        subMap.put("real", JsonValue.createRealValue(6.3));
+        map.put("sub", JsonObject.newInstance(subMap));
+        map.put("int", JsonValue.createIntValue(7));
+        map.put("real", JsonValue.createRealValue(7.2));
+        map.put("string", JsonValue.createStringValue("def"));
+        map.put("booleanTrue", JsonValue.createBooleanValue(true));
+        map.put("booleanFalse", JsonValue.createBooleanValue(false));
+        map.put("null", JsonValue.createNullValue());
+
+        JsonObject obj = JsonObject.newInstance(map);
+
+        try (var writer = new FileWriter("test_output\\createJsonTest.txt")) {
+            writer.write(obj.stringify());
+        }
+        assertTrue(TestUtil.compareFiles("test_output\\createJsonTest.txt", "test_expected\\createJsonTest.txt"));
+    }
 }
