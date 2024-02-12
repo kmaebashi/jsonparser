@@ -4,7 +4,6 @@ JavaによるJSONパーサです。
 
 ## 使い方
 ```
-JsonElement elem;
 try (var parser = JsonParser.newInstance("test.json")) {
     JsonElement elem = parser.parse();
     ...
