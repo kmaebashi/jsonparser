@@ -12,18 +12,37 @@ public class Lexer {
     private final Reader reader;
 
     private enum Status {
+        // 初期状態
         INITIAL,
+        // 数値のマイナス記号読み込み直後
         MINUS,
+        // 数値の小数点より前
         INT_PART,
+        // 数値の小数点読み込み直後
         DECIMAL_POINT,
+        // 小数点以後の数字読み込み中
         AFTER_DECIMAL_POINT,
+        // 指数表記のE(またはe)読み込み直後
+        // 次には指数の符号が来る可能性がある
         EXP_SIGN,
+        // 指数表記の指数部の値
         EXP,
+        // 予約語の可能性のある文字列の途中
         ALNUM,
+        // 文字列内部
         STRING,
+        // 文字列内の「\」取得直後
         STRING_ESCAPE,
+        // 「\」の後、「u」が来て、16進数四桁を読み込むところまで
+        // 4桁読み込むとSTRING_UNICODE2に遷移する。
         STRING_UNICODE,
+        // Unicodeの16進4桁を読み込んだ直後。
+        // この後に「\」と「u」が続く場合はサロゲートペアの可能性があるので
+        // 継続して読み込み、unicodeCodePointsに蓄積する必要がある。
         STRING_UNICODE2,
+        // Unicodeの16進4桁を読み込んだ後に「\」が来た。
+        // この後に「u」が来ればUnicode継続、それ以外の文字なら
+        // (1文字戻して)通常のSTRING_ESCAPEに遷移する。
         STRING_UNICODE3
     }
 
