@@ -149,4 +149,5 @@ class JsonParserTest {
         }
         assertTrue(TestUtil.compareFiles("test_output\\createJsonTest.txt", "test_expected\\createJsonTest.txt"));
     }
+
 }
