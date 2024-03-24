@@ -28,7 +28,8 @@ Test1 test1 = ClassMapper.toObject(Test1.class);
 - JSONオブジェクトのキーが、同名のクラスのpublicフィールドにマップされます。getterやsetterは使いません(使えません)。
 - JavaのListはJSONの配列にマップしますが、逆向きは不可です。Listの要素の方が実行時には特定できないためです。配列を使ってください。
 - 詳細はテストコード(src/test/com/kmaebashi/jsonparser/ClassMapperTest.java)を参照してください。
-- 
+- クラスにはあるがJSONには出したくないフィールドには「@JsonIgnore」アノテーションを付けておくことでJSONへの出力を抑止できます。
+
 | JSONの型 | クラスの型 | 備考 |
 | --- | --- | --- |
 | 整数型 | int | |
