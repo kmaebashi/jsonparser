@@ -25,6 +25,26 @@ Test1 test1 = ClassMapper.toObject(Test1.class);
 }
 ```
 - ClassMapperのstaticメソッドを使うことで、通常のクラスからJSONへの変換、JSONから通常のクラスへの変換ができます。
+- JSONオブジェクトのキーが、同名のクラスのpublicフィールドにマップされます。getterやsetterは使いません(使えません)。
+- JavaのListはJSONの配列にマップしますが、逆向きは不可です。Listの要素の方が実行時には特定できないためです。配列を使ってください。
+- 詳細はテストコード(src/test/com/kmaebashi/jsonparser/ClassMapperTest.java)を参照してください。
+- 
+| JSONの型 | クラスの型 | 備考 |
+| --- | --- | --- |
+| 整数型 | int | |
+| 整数型 | Integer | |
+| 実数型 | float | |
+| 実数型 | Float | |
+| 実数型 | double | |
+| 実数型 | Double | |
+| 論理型 | boolean | |
+| 論理型 | Boolean | |
+| 文字列型 | String | |
+| 配列 | [] | Javaの配列 |
+| 配列 | List | クラス→JSONのみ可。逆向きは不可 |
+| オブジェクト | 任意のクラス | JSONオブジェクトのキーが同名のpublicフィールドにマップされる |
+
+
 
 ## ライセンスについて
 NYSL Version 0.9982とします。作者は一切の著作権を主張しませんので、改変するなり煮るなり焼くなり好きにしてください。
