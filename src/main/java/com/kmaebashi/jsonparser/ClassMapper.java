@@ -74,7 +74,7 @@ public class ClassMapper {
                     continue;
                 }
                 int modifier = field.getModifiers();
-                if (Modifier.isPublic(modifier)) {
+                if (!Modifier.isPublic(modifier)) {
                     continue;
                 }
                 try {
@@ -88,7 +88,8 @@ public class ClassMapper {
     }
 
     public static <T> T toObject(String json, Class<T> targetClass)
-            throws JsonParseException, TypeMismatchException, NoSuchMethodException, NoSuchFieldException,
+            throws JsonParseException, JsonDeserializeException, TypeMismatchException,
+                NoSuchMethodException, NoSuchFieldException,
                 InstantiationException, IllegalAccessException, InvocationTargetException {
         JsonElement jsonElement = JsonParser.parse(json);
         return toObject(jsonElement, targetClass);
@@ -96,7 +97,7 @@ public class ClassMapper {
 
     @SuppressWarnings("unchecked")
     public static <T> T toObject(JsonElement jsonElement, Class<T> targetClass)
-            throws TypeMismatchException, NoSuchMethodException, NoSuchFieldException,
+            throws TypeMismatchException, JsonDeserializeException, NoSuchMethodException, NoSuchFieldException,
                 InstantiationException, IllegalAccessException, InvocationTargetException {
         if (!targetClass.isPrimitive() && jsonIsNull(jsonElement)) {
             return null;
@@ -125,7 +126,7 @@ public class ClassMapper {
                     return (T)Double.valueOf(((JsonValue)jsonElement).getInt());
                 }
             }
-            throw new TypeMismatchException(jsonElement, "(単精度の)実数型");
+            throw new TypeMismatchException(jsonElement, "実数型");
         } else if (targetClass == boolean.class || targetClass == Boolean.class) {
             if (jsonElement instanceof JsonValue value && value.getType() == JsonValueType.BOOLEAN) {
                 return (T)Boolean.valueOf(((JsonValue)jsonElement).getBoolean());
@@ -146,20 +147,10 @@ public class ClassMapper {
                 throw new TypeMismatchException(jsonElement, "配列");
             }
         } else if (List.class.isAssignableFrom(targetClass)) {
-            if (jsonElement instanceof JsonArray array) {
-                List<JsonElement> list = array.getArray();
-                //List<Object> target = (List)targetClass.getDeclaredConstructor().newInstance();
-                List<Object> target = new ArrayList<>();
-                for (JsonElement elem : list) {
-                    target.add(toObject(elem, Object.class));
-                }
-                return (T)target;
-            } else {
-                throw new TypeMismatchException(jsonElement, "List");
-            }
+            throw new JsonDeserializeException("Listコレクションへの変換はサポートしていません。",
+                                               jsonElement.getLineNumber());
         } else {
             if (jsonElement instanceof JsonObject obj) {
-                System.out.println("targetClass.." + targetClass.getName());
                 return (T)createObject(obj, targetClass);
             } else {
                 throw new TypeMismatchException(jsonElement, "オブジェクト");
@@ -169,7 +160,8 @@ public class ClassMapper {
 
     @SuppressWarnings("unchecked")
     private static Object createArray(List<JsonElement> list, Class targetClass)
-            throws TypeMismatchException, NoSuchMethodException, NoSuchFieldException,
+            throws TypeMismatchException, JsonDeserializeException,
+                NoSuchMethodException, NoSuchFieldException,
                 InstantiationException, IllegalAccessException, InvocationTargetException {
         Class elemClass = targetClass.getComponentType();
 
@@ -226,8 +218,9 @@ public class ClassMapper {
 
     @SuppressWarnings("unchecked")
     private static Object createObject(JsonObject jsonObject, Class targetClass)
-            throws TypeMismatchException, NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException, NoSuchFieldException {
+            throws TypeMismatchException, JsonDeserializeException,
+                    NoSuchMethodException, InstantiationException,
+                    IllegalAccessException, InvocationTargetException, NoSuchFieldException {
         Object targetObj = targetClass.getDeclaredConstructor().newInstance();
 
         for (String key: jsonObject.getMap().keySet()) {

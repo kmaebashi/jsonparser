@@ -16,6 +16,16 @@ try (var parser = JsonParser.newInstance("test.json")) {
 - 詳細はテストコード(src/test/com/kmaebashi/jsonparser/JsonParserTest.java)を参照してください。
 - 各JsonValueは元Jsonの行番号を持ちます。また、JsonArrayとJsonObjectは、開き括弧と閉じ括弧の行番号を持ち、さらにJsonObjectは各キーの行番号も持ちます。これを利用するプログラム側で適切なエラーメッセージを表示するための機能です。
 
+```
+// オブジェクトからJSONへの変換
+String jsonStr = ClassMapper.toJson(obj);
+
+// JSONからオブジェクトへの変換
+Test1 test1 = ClassMapper.toObject(Test1.class);
+}
+```
+- ClassMapperのstaticメソッドを使うことで、通常のクラスからJSONへの変換、JSONから通常のクラスへの変換ができます。
+
 ## ライセンスについて
 NYSL Version 0.9982とします。作者は一切の著作権を主張しませんので、改変するなり煮るなり焼くなり好きにしてください。
 http://www.kmonos.net/nysl/
